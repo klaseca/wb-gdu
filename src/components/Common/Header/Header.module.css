@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #212121;
+  height: 32px;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  width: 30px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}

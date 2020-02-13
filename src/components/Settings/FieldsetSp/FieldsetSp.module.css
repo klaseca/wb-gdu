@@ -1,0 +1,17 @@
+.fsBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.legend {
+  color: #fff !important;
+  padding: 0 5px !important;
+  font-size: 1rem;
+  margin-left: 10px;
+}
+
+.label {
+  color: #fff;
+}

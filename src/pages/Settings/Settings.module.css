@@ -1,0 +1,25 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.h1 {
+  color: aliceblue;
+  text-align: center;
+  margin: 10px 0;
+  font-size: 2rem;
+}
+
+.box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}

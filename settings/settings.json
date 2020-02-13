@@ -1,0 +1,23 @@
+{
+  "defaultUpdateType": "none",
+  "manualUpdateServer": "ru-alpha",
+  "singlePaths": [],
+  "multiPaths": [],
+  "servers": [
+    {
+      "id": 1,
+      "name": "ru-alpha",
+      "checked": false
+    },
+    {
+      "id": 2,
+      "name": "ru-bravo",
+      "checked": false
+    },
+    {
+      "id": 3,
+      "name": "ru-charlie",
+      "checked": false
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+.block {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
