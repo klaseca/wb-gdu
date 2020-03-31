@@ -1,7 +1,5 @@
 import React from 'react';
 import s from './AutoUpdate.module.css';
-import { Snackbar, Grow } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import ServersBox from './../ServersBox/ServersBox';
 
 import { connect } from 'react-redux';
@@ -11,10 +9,7 @@ import sh from 'app/utils/settings-handler';
 
 function AutoUpdate({
   servers,
-  isToast,
   setIsToast,
-  text,
-  severity,
   setToastData
 }) {
   const updateData = async () => {
@@ -51,26 +46,8 @@ function AutoUpdate({
     }
   };
 
-  const closeToast = () => {
-    setIsToast(false);
-  };
-
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        TransitionComponent={Grow}
-        open={isToast}
-        autoHideDuration={6000}
-        onClose={closeToast}>
-        <Alert severity={severity} variant='filled' onClose={closeToast}>
-          {text}
-        </Alert>
-      </Snackbar>
-
       <ServersBox />
       <div className={s.box}>
         <div className={s.btnBox}>
@@ -85,15 +62,8 @@ function AutoUpdate({
 
 const mapStateToProps = ({
   settings: { servers },
-  main: {
-    isToast,
-    toastData: { text, severity }
-  }
 }) => ({
   servers,
-  isToast,
-  text,
-  severity
 });
 
 const mapDispatchToProps = {
