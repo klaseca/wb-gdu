@@ -8,6 +8,7 @@ import CustomButton from 'com/Common/CustomButton';
 
 import { connect } from 'react-redux';
 import { setPath, setPaths, resetPath, addPath } from 'app/store/settings/settingsActions';
+import { setIsToast, setToastData } from 'app/store/main/mainActions';
 
 import sh from 'app/utils/settings-handler';
 import uuid from 'uuid/v4';
@@ -19,7 +20,9 @@ function PathsPanel({
   isSinglePaths,
   paths,
   setPaths,
-  addPath
+  addPath,
+  setIsToast,
+  setToastData
 }) {
   useMountEffect(() => {
     async function ue() {
@@ -35,6 +38,13 @@ function PathsPanel({
   });
 
   const multiAddPath = async () => {
+    if (!pathValue) {
+      setToastData({ text: 'Enter the path', severity: 'warning' });
+      setIsToast(true);
+
+      return;
+    }
+
     const path = { id: uuid(), path: pathValue };
 
     addPath(path);
@@ -83,7 +93,9 @@ const mapDispatchToProps = {
   setPath,
   setPaths,
   resetPath,
-  addPath
+  addPath,
+  setIsToast,
+  setToastData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PathsPanel);
