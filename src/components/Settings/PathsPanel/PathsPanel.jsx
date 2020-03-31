@@ -38,7 +38,7 @@ function PathsPanel({
   });
 
   const multiAddPath = async () => {
-    if (!pathValue) {
+    if (pathValue.trim() === '') {
       setToastData({ text: 'Enter the path', severity: 'warning' });
       setIsToast(true);
 
