@@ -63,7 +63,10 @@ class SettingsHandler {
         multiPaths.map(async ({ path }) => await this.parseMultiPaths(path))
       );
 
-      const paths = [...parseSinglePaths, ...parseMultiPaths.flat()];
+      const rawPaths = new Set([...parseSinglePaths, ...parseMultiPaths.flat()]);
+
+      const paths = [...rawPaths];
+
       for (const path of paths) {
         for (const [server, data] of fullData) {
           const pathToFile = resolve(path, `cfg/server/${server}.cfg`);
