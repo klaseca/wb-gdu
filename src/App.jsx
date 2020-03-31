@@ -5,6 +5,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from 'com/Common/Header/Header';
 import Main from './pages/Main/Main';
 import Settings from './pages/Settings/Settings';
+import Toast from 'com/Common/Toast';
 
 import store from 'store/store';
 import { Provider } from 'react-redux';
@@ -13,6 +14,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
+        <Toast />
         <Header />
         <Switch>
           <Route exact path='/' component={Main} />
