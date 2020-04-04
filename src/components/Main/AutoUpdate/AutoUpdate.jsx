@@ -3,16 +3,24 @@ import s from './AutoUpdate.module.css';
 import ServersBox from './../ServersBox/ServersBox';
 
 import { connect } from 'react-redux';
-import { setIsToast, setToastData } from 'app/store/main/mainActions';
+import {
+  setIsToast,
+  setToastData,
+  setIsUpdating
+} from 'app/store/main/mainActions';
 
 import sh from 'app/utils/settings-handler';
 
 function AutoUpdate({
   servers,
   setIsToast,
-  setToastData
+  setToastData,
+  isUpdating,
+  setIsUpdating
 }) {
   const updateData = async () => {
+    setIsUpdating(true);
+
     const activeServers = servers
       .filter(server => server.checked)
       .map(({ name }) => name);
@@ -33,6 +41,8 @@ function AutoUpdate({
 
       const isSuccess = await sh.updateGameData(data);
 
+      setIsUpdating(false);
+
       if (isSuccess) {
         setToastData({ text: 'Game data updated', severity: 'success' });
         setIsToast(true);
@@ -50,25 +60,34 @@ function AutoUpdate({
     <>
       <ServersBox />
       <div className={s.box}>
-        <div className={s.btnBox}>
-          <button className={s.btn} onClick={updateData}>
-            Check update
-          </button>
-        </div>
+        {isUpdating ? (
+          <>
+            <div className={s.cssloadContainer}>
+              <div className={s.cssloadWhirlpool}></div>
+            </div>
+            <div className={s.updating}>Updating</div>
+          </>
+        ) : (
+          <div className={s.btnBox}>
+            <button className={s.btn} onClick={updateData}>
+              Check update
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
 }
 
-const mapStateToProps = ({
-  settings: { servers },
-}) => ({
+const mapStateToProps = ({ settings: { servers }, main: { isUpdating } }) => ({
   servers,
+  isUpdating
 });
 
 const mapDispatchToProps = {
   setIsToast,
-  setToastData
+  setToastData,
+  setIsUpdating
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoUpdate);

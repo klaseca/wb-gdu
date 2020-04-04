@@ -4,6 +4,7 @@ export const SHOW_SELECT_BLOCK = 'SHOW_SELECT_BLOCK';
 export const CHANGE_AUTO_UPDATE = 'IS_AUTO_UPDATE';
 export const CHANGE_IS_TOAST = 'CHANGE_IS_TOAST';
 export const CHANGE_TOAST_DATA = 'CHANGE_TOAST_DATA';
+export const CHANGE_IS_UPDATING = 'CHANGE_IS_UPDATING';
 
 export const setValue = ({ target: { value } }) => ({
   type: CHANGE_VALUE,
@@ -32,4 +33,9 @@ export const setIsToast = bool => ({
 export const setToastData = data => ({
   type: CHANGE_TOAST_DATA,
   payload: data
+});
+
+export const setIsUpdating = bool => ({
+  type: CHANGE_IS_UPDATING,
+  payload: bool
 });

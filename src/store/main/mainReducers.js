@@ -3,7 +3,8 @@ import {
   SHOW_SELECT_BLOCK,
   CHANGE_AUTO_UPDATE,
   CHANGE_IS_TOAST,
-  CHANGE_TOAST_DATA
+  CHANGE_TOAST_DATA,
+  CHANGE_IS_UPDATING
 } from './mainActions';
 
 const defaultState = {
@@ -11,6 +12,7 @@ const defaultState = {
   showBlock: true,
   isAutoUpdate: true,
   isToast: false,
+  isUpdating: false,
   toastData: {
     text: '',
     severity: ''
@@ -46,6 +48,12 @@ const handlers = {
     return {
       ...state,
       toastData
+    }
+  },
+  [CHANGE_IS_UPDATING](state, isUpdating) {
+    return {
+      ...state,
+      isUpdating
     }
   }
 };
