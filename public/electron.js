@@ -2,10 +2,11 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 const { app, BrowserWindow } = require('electron');
 
-const path = require('path');
+const { join } = require('path');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
+let preloadWindow;
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -26,6 +27,7 @@ async function createWindow() {
     maxWidth: 800,
     maxHeight: 800,
     frame: false,
+    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -34,7 +36,7 @@ async function createWindow() {
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
+      : `file://${join(__dirname, './../build/index.html')}`
   );
 
   if (isDev) {
@@ -45,9 +47,40 @@ async function createWindow() {
   }
 
   mainWindow.on('closed', () => (mainWindow = null));
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (preloadWindow) {
+      preloadWindow.close();
+    }
+
+    mainWindow.show();
+  });
 }
 
-app.on('ready', createWindow);
+function createPreloadWindow() {
+  preloadWindow = new BrowserWindow({
+    width: 300,
+    height: 400,
+    frame: false,
+    resizable: false,
+    show: false
+  });
+
+  preloadWindow.loadURL(
+    isDev
+      ? `file://${join(__dirname, './loading.html')}`
+      : `file://${join(__dirname, './../build/loading.html')}`
+  );
+
+  preloadWindow.on('closed', () => (preloadWindow = null));
+
+  preloadWindow.webContents.on('did-finish-load', () => preloadWindow.show());
+}
+
+app.on('ready', () => {
+  createPreloadWindow();
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
