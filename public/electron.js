@@ -40,8 +40,6 @@ async function createWindow() {
   );
 
   if (isDev) {
-    // Open the DevTools.
-    //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     await installExtensions();
     mainWindow.webContents.openDevTools();
   }
