@@ -1,0 +1,29 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #424242;
+  margin-bottom: 9px;
+  font-size: 1.5em;
+  color: rgba(255, 255, 255, 0.83);
+}
+
+.text {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  width: 4vh;
+  height: 4vh;
+}
+
+.tooltipText {
+  font-size: 1.5em;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
