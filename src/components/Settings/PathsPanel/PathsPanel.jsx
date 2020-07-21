@@ -1,16 +1,18 @@
 import React from 'react';
 import s from './PathsPanel.module.css';
-import { useMountEffect } from 'app/hooks/useMountEffect';
 
-import PathInput from './../PathInput';
-import PathsList from './../PathsList/PathsList';
+import PathInput from 'com/Settings/PathInput';
+import PathsList from 'com/Settings/PathsList/PathsList';
 import CustomButton from 'com/Common/CustomButton';
 
 import { connect } from 'react-redux';
-import { setPath, setPaths, resetPath, addPath } from 'app/store/settings/settingsActions';
+import {
+  setPath,
+  resetPath,
+  addPath,
+} from 'app/store/settings/settingsActions';
 import { setIsToast, setToastData } from 'app/store/main/mainActions';
 
-import sh from 'app/utils/settings-handler';
 import uuid from 'uuid/v4';
 
 function PathsPanel({
@@ -18,24 +20,13 @@ function PathsPanel({
   setPath,
   resetPath,
   isSinglePaths,
-  paths,
-  setPaths,
+  singlePaths,
+  multiPaths,
   addPath,
   setIsToast,
-  setToastData
+  setToastData,
 }) {
-  useMountEffect(() => {
-    async function ue() {
-      const settings = await sh.read();
-
-      if (isSinglePaths) {
-        setPaths(settings.singlePaths);
-      } else {
-        setPaths(settings.multiPaths);
-      }
-    }
-    ue();
-  });
+  const paths = isSinglePaths ? singlePaths : multiPaths;
 
   const multiAddPath = async () => {
     if (pathValue.trim() === '') {
@@ -48,16 +39,6 @@ function PathsPanel({
     const path = { id: uuid(), path: pathValue };
 
     addPath(path);
-
-    const settings = await sh.read();
-
-    if (isSinglePaths) {
-      settings.singlePaths.push(path);
-    } else {
-      settings.multiPaths.push(path);
-    }
-
-    await sh.save(settings);
 
     resetPath();
   };
@@ -86,16 +67,15 @@ function PathsPanel({
 }
 
 const mapStateToProps = ({
-  settings: { pathValue, isSinglePaths, paths }
-}) => ({ pathValue, isSinglePaths, paths });
+  settings: { pathValue, isSinglePaths, singlePaths, multiPaths },
+}) => ({ pathValue, isSinglePaths, singlePaths, multiPaths });
 
 const mapDispatchToProps = {
   setPath,
-  setPaths,
   resetPath,
   addPath,
   setIsToast,
-  setToastData
+  setToastData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PathsPanel);
