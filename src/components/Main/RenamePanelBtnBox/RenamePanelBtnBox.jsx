@@ -8,7 +8,7 @@ import {
   setShowSelectBlock,
   setToastData,
   setIsToast,
-  resetValue
+  resetValue,
 } from 'app/store/main/mainActions';
 
 import sh from 'app/utils/settings-handler';
@@ -20,7 +20,9 @@ function RenamePanelBtnBox({
   resetValue,
   setToastData,
   setIsToast,
-  manualUpdateServer
+  manualUpdateServer,
+  singlePaths,
+  multiPaths,
 }) {
   const saveData = async () => {
     if (value.trim() === '') {
@@ -28,6 +30,8 @@ function RenamePanelBtnBox({
       setIsToast(true);
     } else {
       const data = [[manualUpdateServer, value]];
+
+      sh.loadPaths(singlePaths, multiPaths);
 
       const isSuccess = await sh.updateGameData(data);
 
@@ -38,7 +42,7 @@ function RenamePanelBtnBox({
       } else {
         setToastData({
           text: 'Check the paths are correct',
-          severity: 'error'
+          severity: 'error',
         });
         setIsToast(true);
       }
@@ -48,7 +52,7 @@ function RenamePanelBtnBox({
   return (
     <div className={s.box}>
       {!isAutoUpdate && (
-        <CustomButton onClick={saveData} bg='rgb(130, 192, 112)' hoverBg='rgb(99, 168, 80)'>
+        <CustomButton onClick={saveData} bg='#A5D6A7' hoverBg='#81C784'>
           Save data
         </CustomButton>
       )}
@@ -58,18 +62,15 @@ function RenamePanelBtnBox({
 }
 
 const mapStateToProps = ({
-  main: {
-    isAutoUpdate,
-    value
-  },
-  settings: { manualUpdateServer }
-}) => ({ isAutoUpdate, value, manualUpdateServer });
+  main: { isAutoUpdate, value },
+  settings: { manualUpdateServer, singlePaths, multiPaths },
+}) => ({ isAutoUpdate, value, manualUpdateServer, singlePaths, multiPaths });
 
 const mapDispatchToProps = {
   setShowSelectBlock,
   setToastData,
   setIsToast,
-  resetValue
+  resetValue,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RenamePanelBtnBox);
