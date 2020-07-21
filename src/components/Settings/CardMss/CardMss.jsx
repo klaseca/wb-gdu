@@ -1,35 +1,27 @@
 import React from 'react';
-import s from './FieldsetDut.module.css';
-import { FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import s from './CardMss.module.css';
+import { RadioGroup, FormControlLabel } from '@material-ui/core';
 
-import Fieldset from 'com/Common/Fieldset';
-import TypeUpdateRadio from '../../Common/TypeUpdateRadio';
+import Card from 'com/Settings/Card/Card';
+import TypeUpdateRadio from 'com/Common/TypeUpdateRadio';
 
 import { connect } from 'react-redux';
 import { setManualUpdateServer } from 'app/store/settings/settingsActions';
 
-import sh from 'app/utils/settings-handler';
-
-function FieldsetMss({ manualUpdateServer, setManualUpdateServer }) {
+function CardMss({ manualUpdateServer, setManualUpdateServer }) {
   const multiSetManualUpadteType = async ({ target: { value } }) => {
     setManualUpdateServer(value);
-
-    const settings = await sh.read();
-    settings.manualUpdateServer = value;
-    await sh.save(settings);
   };
 
   return (
-    <Fieldset component='fieldset'>
-      <FormLabel component='legend' className={s.legend}>
-        Manual update type
-      </FormLabel>
+    <Card title={'Manual update type'}>
       <RadioGroup
         row
         className={s.group}
         name='type-update'
         value={manualUpdateServer}
-        onChange={multiSetManualUpadteType}>
+        onChange={multiSetManualUpadteType}
+      >
         <FormControlLabel
           className={s.label}
           value='ru-alpha'
@@ -49,16 +41,16 @@ function FieldsetMss({ manualUpdateServer, setManualUpdateServer }) {
           label='ru-charlie'
         />
       </RadioGroup>
-    </Fieldset>
+    </Card>
   );
 }
 
 const mapStateToProps = ({ settings: { manualUpdateServer } }) => ({
-  manualUpdateServer
+  manualUpdateServer,
 });
 
 const mapDispatchToProps = {
-  setManualUpdateServer
+  setManualUpdateServer,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FieldsetMss);
+export default connect(mapStateToProps, mapDispatchToProps)(CardMss);

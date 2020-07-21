@@ -1,34 +1,20 @@
 import React from 'react';
-import s from './FieldsetAss.module.css';
-import { FormGroup, FormLabel, FormControlLabel } from '@material-ui/core';
+import s from './CardAss.module.css';
+import { FormGroup, FormControlLabel } from '@material-ui/core';
 
-import Fieldset from 'com/Common/Fieldset';
+import Card from 'com/Settings/Card/Card';
 import CustomCheckbox from 'com/Common/CustomCheckbox';
 
 import { connect } from 'react-redux';
 import { setStateCheckbox } from 'app/store/settings/settingsActions';
 
-import sh from 'app/utils/settings-handler';
-
-function FieldsetAss({ servers, setStateCheckbox }) {
-  const multiSetStateCheckbox = async id => {
+function CardAss({ servers, setStateCheckbox }) {
+  const multiSetStateCheckbox = async (id) => {
     setStateCheckbox(id);
-
-    const settings = await sh.read();
-    const newServers = settings.servers.map(server => {
-      if (server.id === id) server.checked = !server.checked;
-      return server;
-    });
-    settings.servers = newServers;
-
-    await sh.save(settings);
   };
 
   return (
-    <Fieldset component='fieldset'>
-      <FormLabel component='legend' className={s.legend}>
-        Auto servers select
-      </FormLabel>
+    <Card title={'Auto servers select'}>
       <FormGroup className={s.group} row>
         {servers.map(({ id, name, checked }) => {
           return (
@@ -48,16 +34,16 @@ function FieldsetAss({ servers, setStateCheckbox }) {
           );
         })}
       </FormGroup>
-    </Fieldset>
+      </Card>
   );
 }
 
 const mapStateToProps = ({ settings: { servers } }) => ({
-  servers
+  servers,
 });
 
 const mapDispatchToProps = {
-  setStateCheckbox
+  setStateCheckbox,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FieldsetAss);
+export default connect(mapStateToProps, mapDispatchToProps)(CardAss);

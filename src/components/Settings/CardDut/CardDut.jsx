@@ -1,35 +1,27 @@
 import React from 'react';
-import s from './FieldsetDut.module.css';
-import { FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import s from './CardDut.module.css';
+import { RadioGroup, FormControlLabel } from '@material-ui/core';
 
-import Fieldset from 'com/Common/Fieldset';
+import Card from 'com/Settings/Card/Card';
 import TypeUpdateRadio from 'com/Common/TypeUpdateRadio';
 
 import { connect } from 'react-redux';
 import { setAutoUpdateType } from 'app/store/settings/settingsActions';
 
-import sh from 'app/utils/settings-handler';
-
-function FieldsetDut({ defaultUpdateType, setAutoUpdateType }) {
+function CardDut({ defaultUpdateType, setAutoUpdateType }) {
   const multiSetAutoUpadteType = async ({ target: { value } }) => {
     setAutoUpdateType(value);
-
-    const settings = await sh.read();
-    settings.defaultUpdateType = value;
-    await sh.save(settings);
   };
 
   return (
-    <Fieldset component='fieldset'>
-      <FormLabel component='legend' className={s.legend}>
-        Default update type
-      </FormLabel>
+    <Card title={'Default update type'}>
       <RadioGroup
         row
         className={s.group}
         name='type-update'
         value={defaultUpdateType}
-        onChange={multiSetAutoUpadteType}>
+        onChange={multiSetAutoUpadteType}
+      >
         <FormControlLabel
           className={s.label}
           value='none'
@@ -49,16 +41,16 @@ function FieldsetDut({ defaultUpdateType, setAutoUpdateType }) {
           label='Manual'
         />
       </RadioGroup>
-    </Fieldset>
+    </Card>
   );
 }
 
 const mapStateToProps = ({ settings: { defaultUpdateType } }) => ({
-  defaultUpdateType
+  defaultUpdateType,
 });
 
 const mapDispatchToProps = {
-  setAutoUpdateType
+  setAutoUpdateType,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FieldsetDut);
+export default connect(mapStateToProps, mapDispatchToProps)(CardDut);
