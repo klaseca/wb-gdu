@@ -1,59 +1,58 @@
+export const INIT_SETTINGS = 'INIT_SETTINGS';
 export const CHANGE_PATH = 'CHANGE_PATH';
 export const SHOW_MULTI_BLOCK = 'SHOW_MULTI_BLOCK';
 export const IS_SINGLE_PATHS = 'IS_SINGLE_PATHS';
 export const CHANGE_AUTO_UPDATE_TYPE = 'CHANGE_AUTO_UPDATE_TYPE';
 export const CHANGE_MANUAL_UPDATE_SERVER = 'CHANGE_MANUAL_UPDATE_SERVER';
-export const CHANGE_PATHS = 'CHANGE_PATHS';
 export const ADD_PATH = 'ADD_PATH';
 export const REMOVE_PATH = 'REMOVE_PATH';
 export const CHANGE_STATE_CHECKBOX = 'CHANGE_SERVER_CHECKBOX';
-export const ENABLE_CHECKBOX = 'ENABLE_CHECKBOX';
+
+export const initSettings = (payload) => ({
+  type: INIT_SETTINGS,
+  payload,
+});
 
 export const setPath = ({ target: { value } }) => ({
   type: CHANGE_PATH,
-  payload: value
+  payload: value,
 });
 
 export const resetPath = () => ({
   type: CHANGE_PATH,
-  payload: ''
+  payload: '',
 });
 
-export const setAutoUpdateType = value => ({
+export const setAutoUpdateType = (value) => ({
   type: CHANGE_AUTO_UPDATE_TYPE,
-  payload: value
+  payload: value,
 });
 
-export const setManualUpdateServer = value => ({
+export const setManualUpdateServer = (value) => ({
   type: CHANGE_MANUAL_UPDATE_SERVER,
-  payload: value
+  payload: value,
 });
 
 export const setShowSelectBlock = () => ({
-  type: SHOW_MULTI_BLOCK
+  type: SHOW_MULTI_BLOCK,
 });
 
-export const setIsSinglePaths = bool => ({
+export const setIsSinglePaths = (bool) => ({
   type: IS_SINGLE_PATHS,
-  payload: bool
+  payload: bool,
 });
 
-export const setPaths = paths => ({
-  type: CHANGE_PATHS,
-  payload: paths
-});
-
-export const addPath = path => ({
+export const addPath = (payload) => ({
   type: ADD_PATH,
-  payload: path
+  payload,
 });
 
-export const setStateCheckbox = id => ({
+export const removePath = (id) => ({
+  type: REMOVE_PATH,
+  payload: id,
+});
+
+export const setStateCheckbox = (id) => ({
   type: CHANGE_STATE_CHECKBOX,
-  payload: id
-});
-
-export const enableCheckbox = id => ({
-  type: ENABLE_CHECKBOX,
-  payload: id
+  payload: id,
 });

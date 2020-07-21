@@ -1,13 +1,13 @@
 import {
+  INIT_SETTINGS,
   IS_SINGLE_PATHS,
   SHOW_MULTI_BLOCK,
   CHANGE_PATH,
   CHANGE_AUTO_UPDATE_TYPE,
   CHANGE_MANUAL_UPDATE_SERVER,
-  CHANGE_PATHS,
   ADD_PATH,
+  REMOVE_PATH,
   CHANGE_STATE_CHECKBOX,
-  ENABLE_CHECKBOX
 } from './settingsActions';
 
 const defaultState = {
@@ -16,93 +16,101 @@ const defaultState = {
   isSinglePaths: true,
   defaultUpdateType: 'none',
   manualUpdateServer: 'ru-alpha',
-  paths: [],
+  singlePaths: [],
+  multiPaths: [],
   servers: [
     {
       id: 1,
       name: 'ru-alpha',
-      checked: false
+      checked: false,
     },
     {
       id: 2,
       name: 'ru-bravo',
-      checked: false
+      checked: false,
     },
     {
       id: 3,
       name: 'ru-charlie',
-      checked: false
-    }
-  ]
+      checked: false,
+    },
+  ],
 };
 
 const handlers = {
+  [INIT_SETTINGS](state, payload) {
+    return {
+      ...state,
+      ...payload,
+    };
+  },
   [CHANGE_PATH](state, pathValue) {
     return {
       ...state,
-      pathValue
+      pathValue,
     };
   },
   [SHOW_MULTI_BLOCK](state) {
     return {
       ...state,
-      showBlock: !state.showBlock
+      showBlock: !state.showBlock,
     };
   },
   [IS_SINGLE_PATHS](state, isSinglePaths) {
     return {
       ...state,
-      isSinglePaths
+      isSinglePaths,
     };
   },
   [CHANGE_AUTO_UPDATE_TYPE](state, defaultUpdateType) {
     return {
       ...state,
-      defaultUpdateType
+      defaultUpdateType,
     };
   },
   [CHANGE_MANUAL_UPDATE_SERVER](state, manualUpdateServer) {
     return {
       ...state,
-      manualUpdateServer
+      manualUpdateServer,
     };
   },
-  [CHANGE_PATHS](state, paths) {
-    return {
-      ...state,
-      paths
-    };
-  },
-  [ADD_PATH](state, path) {
-    const newPaths = [...state.paths, path];
+  [ADD_PATH](state, payload) {
+    const paths = state.isSinglePaths
+      ? { singlePaths: [...state.singlePaths, payload] }
+      : { multiPaths: [...state.multiPaths, payload] };
 
     return {
       ...state,
-      paths: newPaths
+      ...paths,
     };
   },
+  [REMOVE_PATH](state, id) {
+    const pathsInState = state.isSinglePaths
+      ? [...state.singlePaths]
+      : [...state.multiPaths];
+
+    const newPaths = pathsInState.filter(path => path.id !== id);
+
+    const paths = state.isSinglePaths
+      ? { singlePaths: newPaths }
+      : { multiPaths: newPaths };
+
+    return {
+      ...state,
+      ...paths,
+    }
+  },
   [CHANGE_STATE_CHECKBOX](state, id) {
-    const newServers = state.servers.map(server => {
+    const servers = state.servers.map((server) => {
       if (server.id === id) server.checked = !server.checked;
       return server;
     });
 
     return {
       ...state,
-      servers: newServers
+      servers,
     };
   },
-  [ENABLE_CHECKBOX](state, id) {
-    const newServers = state.servers.map(server => {
-      if (server.id === id) server.checked = true;
-      return server;
-    });
-
-    return {
-      ...state,
-      servers: newServers
-    };
-  }
 };
 
 export const settingsReducer = (state = defaultState, action) => {
