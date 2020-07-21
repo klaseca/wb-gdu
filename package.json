@@ -43,7 +43,7 @@
     "build": "rescripts build",
     "test": "rescripts test",
     "eject": "rescripts eject",
-    "clean": "rm -r -ea ig dist && rm -r -ea ig build",
+    "clean": "npx rimraf {build,dist}",
     "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron": "electron .",
     "prepack": "npm run clean && npm run build",
