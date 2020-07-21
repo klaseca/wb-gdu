@@ -24,7 +24,7 @@
   border: none;
   cursor: pointer;
   animation: pulse 2s infinite;
-  background-color: rgb(130, 192, 112);
+  background-color: #66BB6A;
   font-size: 1.5rem;
   color: rgb(241, 241, 241);
 }
