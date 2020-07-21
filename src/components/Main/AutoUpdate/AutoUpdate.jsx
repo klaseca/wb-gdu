@@ -1,64 +1,84 @@
 import React from 'react';
 import s from './AutoUpdate.module.css';
-import ServersBox from './../ServersBox/ServersBox';
+import ServersBox from 'com/Main/ServersBox/ServersBox';
+import UpdateResult from 'com/Main/UpdateResult/UpdateResult';
 
 import { connect } from 'react-redux';
 import {
   setIsToast,
   setToastData,
-  setIsUpdating
+  setIsUpdating,
+  setIsUpdated,
+  setUpdateResult,
 } from 'app/store/main/mainActions';
 
 import sh from 'app/utils/settings-handler';
 
 function AutoUpdate({
   servers,
+  singlePaths,
+  multiPaths,
   setIsToast,
   setToastData,
   isUpdating,
-  setIsUpdating
+  setIsUpdating,
+  isUpdated,
+  setIsUpdated,
+  setUpdateResult,
 }) {
   const updateData = async () => {
-    setIsUpdating(true);
+    try {
+      const activeServers = servers
+        .filter((server) => server.checked)
+        .map(({ name }) => name);
 
-    const activeServers = servers
-      .filter(server => server.checked)
-      .map(({ name }) => name);
-
-    if (activeServers.length === 0) {
-      setToastData({ text: 'Select needed servers', severity: 'warning' });
-      setIsToast(true);
-    } else {
-      const res = await Promise.all(
-        activeServers.map(name =>
-          fetch(
-            `https://raw.githubusercontent.com/Levak/warfacebot/master/cfg/server/${name}.cfg`
-          ).then(data => data.text())
-        )
-      );
-
-      const data = activeServers.map((server, i) => [server, res[i]]);
-
-      const isSuccess = await sh.updateGameData(data);
-
-      setIsUpdating(false);
-
-      if (isSuccess) {
-        setToastData({ text: 'Game data updated', severity: 'success' });
+      if (activeServers.length === 0) {
+        setToastData({ text: 'Select needed servers', severity: 'warning' });
         setIsToast(true);
       } else {
-        setToastData({
-          text: 'Check the paths are correct',
-          severity: 'error'
-        });
-        setIsToast(true);
+        setIsUpdating(true);
+
+        const res = await Promise.all(
+          activeServers.map((name) =>
+            fetch(
+              `https://raw.githubusercontent.com/Levak/warfacebot/master/cfg/server/${name}.cfg`
+            ).then((data) => data.text())
+          )
+        );
+
+        const data = activeServers.map((server, i) => [server, res[i]]);
+
+        sh.loadPaths(singlePaths, multiPaths);
+
+        const {
+          isSuccess,
+          successResult,
+          failResult,
+        } = await sh.updateGameData(data);
+
+        setIsUpdating(false);
+
+        if (isSuccess) {
+          setUpdateResult({ successResult, failResult });
+          setIsUpdated(true);
+        } else {
+          setToastData({
+            text: 'Check the paths are correct',
+            severity: 'error',
+          });
+          setIsToast(true);
+        }
       }
+    } catch (error) {
+      setIsUpdating(false);
+      setToastData({ text: 'Network error', severity: 'error' });
+      setIsToast(true);
     }
   };
 
   return (
     <>
-      <ServersBox />
+      {!(isUpdating || isUpdated) && <ServersBox />}
       <div className={s.box}>
         {isUpdating ? (
           <>
@@ -67,6 +87,8 @@ function AutoUpdate({
             </div>
             <div className={s.updating}>Updating</div>
           </>
+        ) : isUpdated ? (
+          <UpdateResult />
         ) : (
           <div className={s.btnBox}>
             <button className={s.btn} onClick={updateData}>
@@ -79,15 +101,23 @@ function AutoUpdate({
   );
 }
 
-const mapStateToProps = ({ settings: { servers }, main: { isUpdating } }) => ({
+const mapStateToProps = ({
+  settings: { servers, singlePaths, multiPaths },
+  main: { isUpdating, isUpdated },
+}) => ({
   servers,
-  isUpdating
+  singlePaths,
+  multiPaths,
+  isUpdating,
+  isUpdated,
 });
 
 const mapDispatchToProps = {
   setIsToast,
   setToastData,
-  setIsUpdating
+  setIsUpdating,
+  setIsUpdated,
+  setUpdateResult,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoUpdate);
