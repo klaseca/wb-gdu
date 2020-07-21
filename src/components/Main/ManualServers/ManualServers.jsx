@@ -13,7 +13,8 @@ function ManualServers({ manualUpdateServer, setManualUpdateServer }) {
       className={s.group}
       name='type-update'
       value={manualUpdateServer}
-      onChange={({ target: { value } }) => setManualUpdateServer(value)}>
+      onChange={({ target: { value } }) => setManualUpdateServer(value)}
+    >
       <FormControlLabel
         className={s.label}
         value='ru-alpha'
@@ -37,11 +38,11 @@ function ManualServers({ manualUpdateServer, setManualUpdateServer }) {
 }
 
 const mapStateToProps = ({ settings: { manualUpdateServer } }) => ({
-  manualUpdateServer
+  manualUpdateServer,
 });
 
 const mapDispatchToProps = {
-  setManualUpdateServer
+  setManualUpdateServer,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManualServers);
