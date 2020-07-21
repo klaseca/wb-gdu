@@ -12,7 +12,12 @@
   height: 50vh;
   overflow-y: auto;
   width: 90%;
+  padding: 8px;
   background-color: rgba(0, 0, 0, 0.09);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 9px;
+  box-sizing: border-box;
 }
 
 .main::-webkit-scrollbar-track {

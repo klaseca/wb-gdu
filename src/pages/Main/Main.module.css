@@ -5,14 +5,16 @@
 }
 
 .h1 {
-  color: aliceblue;
+  color: #fff;
   text-align: center;
   margin: 10px 0 0 0;
   font-size: 3rem;
+  font-weight: 400;
 }
 
 .h2 {
-  color: aliceblue;
+  color: rgba(255, 255, 255, 0.87);
   text-align: center;
   font-size: 1.5rem;
+  font-weight: 300;
 }

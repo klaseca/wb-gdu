@@ -2,31 +2,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
   flex: 1;
-}
-
-.fs {
-  display: flex;
-  width: 90%;
-  border-width: 2px;
-  border-style: groove;
-  border-color: threedface;
-  border-image: initial;
-}
-
-.legend {
-  color: #fff !important;
-  padding: 0 5px !important;
-  font-size: 1rem;
-  margin-left: 10px;
-}
-
-.group {
-  padding: 10px;
-  justify-content: space-around;
-}
-
-.label {
-  color: #fff;
+  padding: 0 50px;
 }
